@@ -1,0 +1,13 @@
+{
+    "setup":{
+        "done":false
+    },
+    
+    "db":{ 
+        "servername":null,
+        "username":null,
+        "password":null,
+        "database":null
+    }
+
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Configuración</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,400i,500,500i,700,700i|Google+Sans+Display:400,400i,500,500i,700,700i&amp;subset=latin,latin-ext,vietnamese,greek,cyrillic"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/master.css">
+    <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
+</head>
+
+<body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="js/master.js"></script>
+
+    <div class="container">
+        <h2>
+            <b>
+                Bienvenido/a a la configuración del sistema
+            </b>
+        </h2>
+        <p class="flow-text">A continuación debes introducir los detalles de la base de datos para crear la tabla con
+            los códigos.</p>
+
+        <div class="card blue" style="visibility:hidden">
+            <div class="card-content white-text">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col m6 s12">
+                <h3>Configuración de la base de datos</h3>
+                <form>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="localhost" id="servername" type="text">
+                            <label for="servername">Server Name</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="username" id="username" type="text">
+                            <label for="username">User Name</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="password" id="password" type="password">
+                            <label for="password">User Password</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="database" id="database" type="text">
+                            <label for="database">Database Name</label>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="col m6 s12">
+                <h3> Configuración de administración </h3>
+                <form>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Nombre de usuario" id="adminusername" type="text">
+                            <label for="adminusername">Nombre de usuario</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input placeholder="Contraseña" id="adminpassword" type="password">
+                            <label for="adminpassword">Contraseña segura</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col s12">
+                <a id="trysetup" onclick="trySetup()" style="text-transform: none" class="blue btn-large waves-effect right">Comprobar
+                    configuración</a>
+                <a id="applysetup" onclick="applySetup()" style="text-transform: none; visibility: hidden" class="blue btn-large waves-effect right">Aplicar
+                    configuración</a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        if (setupComplete()) {
+            console.log("[INFO] La configuración está realizada, no se deben cambiar las prferencias sin resetear la base de datos")
+            window.location = "index.html"
+        } else {
+            console.log("[INFO] La configuración no está realizada, se puede proceder a configurar el sistema")
+        }
+
+        function setupDatabaseResponse(status, error) {
+            if (!status) {
+                $(".card").css("visibility", "visible").addClass("animated fadeIn")
+                $(".card-content").text(error)
+            } else {
+                $("#trysetup").remove()
+                $("#applysetup").css("visibility", "visible")
+            }
+        }
+
+        function trySetup() {
+            $servername = $("#servername").val()
+            $username = $("#username").val()
+            $password = $("#password").val()
+            $database = $("#database").val()
+
+            $adminusername = $("#adminusername").val()
+            $adminpassword = $("#adminpassword").val()
+
+            setupDatabase([$servername, $username, $password, $database], [$adminusername, $adminpassword])
+            createTable([$servername, $username, $password, $database], [$adminusername, $adminpassword])
+        }
+    </script>
+</body>
+
+</html>
